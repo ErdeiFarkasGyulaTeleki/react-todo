@@ -17,6 +17,8 @@ function App(props) {
   const [filter, setFilter] = useState("All");
 
   function editTask(id, newName) {
+    if (newName.toLowerCase() === 'react') return;
+
     const editedTaskList = tasks.map((task) => {
       if (id === task.id) {
         return { ...task, name: newName };
@@ -27,6 +29,8 @@ function App(props) {
   }
 
   function addTask(name) {
+    if (name.toLowerCase() === 'react') return;
+    
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
     setTasks([...tasks, newTask]);
   }
