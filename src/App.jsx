@@ -12,12 +12,34 @@ const FILTER_MAP = {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
+const ILLEGAL_WORDS = [
+  "react"
+]
+
+function containsIllegalWord(text) {
+  const words = text.split(" ");
+
+  let found = false;
+
+  words.forEach(word => {
+    if (ILLEGAL_WORDS.includes(word.toLowerCase())) {
+      found = true;
+      return;
+    }
+  });
+
+  return found;
+}
+
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
   const [filter, setFilter] = useState("All");
 
   function editTask(id, newName) {
-    if (newName.toLowerCase() === 'react') return;
+    if (containsIllegalWord(newName)) {
+      alert("Illegális szóhasználat!");
+      return;
+    }
 
     const editedTaskList = tasks.map((task) => {
       if (id === task.id) {
@@ -29,8 +51,11 @@ function App(props) {
   }
 
   function addTask(name) {
-    if (name.toLowerCase() === 'react') return;
-    
+    if (containsIllegalWord(name)) {
+      alert("Illegális szóhasználat!");
+      return;
+    }
+
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
     setTasks([...tasks, newTask]);
   }
@@ -62,7 +87,7 @@ function App(props) {
         deleteTask={deleteTask}
         editTask={editTask}
       />
-  ));
+    ));
 
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
