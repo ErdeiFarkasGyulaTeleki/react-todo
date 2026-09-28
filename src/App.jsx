@@ -31,9 +31,13 @@ function containsIllegalWord(text) {
   return found;
 }
 
+const initalTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
 function App(props) {
-  const [tasks, setTasks] = useState(props.tasks);
+  const [tasks, setTasks] = useState(initalTasks);
   const [filter, setFilter] = useState("All");
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 
   function editTask(id, newName) {
     if (containsIllegalWord(newName)) {
