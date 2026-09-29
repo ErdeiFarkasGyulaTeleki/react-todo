@@ -22,6 +22,13 @@ function Todo(props) {
     setNewName(e.target.value);
   }
 
+  function handlePriority(e) {
+    const prio = e.target.value;
+    setPriority(prio);
+    props.setPriority(props.id, prio);
+    console.log(priority);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     props.editTask(props.id, newName);
@@ -76,7 +83,7 @@ function Todo(props) {
           id={props.id}
           type="number"
           defaultValue={props.prio}
-          onChange={() => props.setPriority(props.id, event)}
+          onChange={handlePriority}
         />
       </div>
       <div className="btn-group">

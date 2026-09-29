@@ -93,11 +93,10 @@ function App(props) {
     setTasks(updatedTasks);
   }
 
-  function setPriority(id, event) {
-    console.log(event.target.value);
+  function setPriority(id, prio) {
     const updatedTasks = tasks.map((task) => {
       if (id === task.id) {
-        return { ...task, completed: task.completed, prio: event.target.value };
+        return { ...task, completed: task.completed, prio: prio };
       }
       return task;
     });
