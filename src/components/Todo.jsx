@@ -11,6 +11,7 @@ function usePrevious(value) {
 function Todo(props) {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState("");
+  const [priority, setPriority] = useState(0);
 
   const editFieldRef = useRef(null);
   const editButtonRef = useRef(null);
@@ -71,6 +72,12 @@ function Todo(props) {
         <label className="todo-label" htmlFor={props.id}>
           {props.name}
         </label>
+        <input 
+          id={props.id}
+          type="number"
+          defaultValue={props.prio}
+          onChange={() => props.setPriority(props.id, event)}
+        />
       </div>
       <div className="btn-group">
         <button

@@ -56,6 +56,7 @@ function App(props) {
   }, [tasks.length, prevTaskLength]);
 
   localStorage.setItem("tasks", JSON.stringify(tasks));
+  console.log(JSON.stringify(tasks))
 
   function editTask(id, newName) {
     if (containsIllegalWord(newName)) {
@@ -78,14 +79,25 @@ function App(props) {
       return;
     }
 
-    const newTask = { id: `todo-${nanoid()}`, name, completed: false };
+    const newTask = { id: `todo-${nanoid()}`, name, completed: false, prio: 0 };
     setTasks([...tasks, newTask]);
   }
 
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map((task) => {
       if (id === task.id) {
-        return { ...task, completed: !task.completed };
+        return { ...task, completed: !task.completed, prio: task.prio };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+  }
+
+  function setPriority(id, event) {
+    console.log(event.target.value);
+    const updatedTasks = tasks.map((task) => {
+      if (id === task.id) {
+        return { ...task, completed: task.completed, prio: event.target.value };
       }
       return task;
     });
@@ -105,7 +117,9 @@ function App(props) {
         name={task.name}
         completed={task.completed}
         key={task.id}
+        prio={task.prio}
         toggleTaskCompleted={toggleTaskCompleted}
+        setPriority={setPriority}
         deleteTask={deleteTask}
         editTask={editTask}
       />
