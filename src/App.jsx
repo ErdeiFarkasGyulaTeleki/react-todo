@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
+import axios from "axios";
 import Todo from "./components/Todo";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
@@ -44,6 +45,21 @@ const initalTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 function App(props) {
   const [tasks, setTasks] = useState(initalTasks);
   const [filter, setFilter] = useState("All");
+
+  const [online, setOnline] = useState(false);
+
+  useEffect(() => {
+    const checkOnlineStatus = async () => {
+      try {
+        await axios.get("/");
+        setOnline(true);
+      } catch (error) {
+        setOnline(false);
+      }
+    };
+
+    checkOnlineStatus();
+  }, []);
 
   const listHeadingRef = useRef(null);
 
@@ -139,6 +155,9 @@ function App(props) {
   return (
     <div className="todoapp stack-large">
       <h1>TodoMatic</h1>
+      <label style={{ backgroundColor: online ? "green" : "red", padding: "5px" }}>
+        {online ? "online" : "offline"}
+      </label>
       <Form addTask={addTask} />
       <div className="filters btn-group stack-exception">{filterList}</div>
       <h2 id="list-heading" tabIndex="-1" ref={listHeadingRef}>
